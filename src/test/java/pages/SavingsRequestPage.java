@@ -15,11 +15,13 @@ public class SavingsRequestPage {
     @FindBy(id = "yearsInput")
     private WebElement yearsInput;
 
-    @FindBy(css = "div.result p")
-    private WebElement actualTotalIncome;
-
-    @FindBy(xpath = "//div[contains(@class,'result')]/div[2]/p")
-    private  WebElement actualNetIncome;
+    //@FindBy(css = "div.result p")
+    //private WebElement actualTotalIncome;
+    //@FindBy(xpath = "//div[contains(@class,'result')]/div[2]/p")
+    //private  WebElement actualNetIncome;
+    // use wrapper instead
+    @FindBy(css = "div.result")
+    private WebElement resultWrapper;
 
     @FindBy(css = "h1")
     private WebElement title;
@@ -53,10 +55,10 @@ public class SavingsRequestPage {
     }
 
     public String getActualTotalIncome(){
-        return actualTotalIncome.getText();
+        return resultWrapper.findElement(By.cssSelector("p")).getText();
     }
 
     public String getActualNetIncome(){
-        return actualNetIncome.getText();
+        return resultWrapper.findElement(By.xpath("./div[2]/p")).getText();
     }
 }
