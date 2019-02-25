@@ -23,18 +23,17 @@ public class SavingsCalculatorTest {
     @Test
     public void itShouldDisplayTitle (){
         String expectedTitle = "Savings Calculator";
-        String actualTitle = driver.findElement(By.cssSelector("h1")).getText();
-
+        String actualTitle = getTitle();
         Assert.assertEquals(expectedTitle,actualTitle);
     }
 
     @Test
     public void itShouldCalculateTotalIncome (){
         selectFund("Hoggwart's Fund");
-        inputInvestment("52000");
-        inputYears("4");
+        inputInvestmentAmount("52000");
+        inputInvestmentPeriod("4");
 
-        String actualTotalIncome = driver.findElement(By.cssSelector("div.result p")).getText();
+        String actualTotalIncome = getActualTotalIncome();
         Assert.assertFalse(actualTotalIncome.equals(""));
         Assert.assertTrue(actualTotalIncome.contains("kr"));
     }
@@ -42,10 +41,10 @@ public class SavingsCalculatorTest {
     @Test
     public void itShouldCalculateNetIncome (){
         selectFund("Batman's Cave Development");
-        inputInvestment("24000");
-        inputYears("13");
+        inputInvestmentAmount("24000");
+        inputInvestmentPeriod("13");
 
-        String actualNetIncome = driver.findElement(By.xpath("//div[contains(@class,'result')]/div[2]/p")).getText();
+        String actualNetIncome = getActualNetIncome();
         Assert.assertFalse(actualNetIncome.equals(""));
         Assert.assertTrue(actualNetIncome.contains("kr"));
     }
@@ -60,13 +59,25 @@ public class SavingsCalculatorTest {
         new Select(driver.findElement(By.id("fundSelect"))).selectByVisibleText(fundName);
     }
 
-    private void inputYears(String years) {
+    private void inputInvestmentPeriod(String years) {
         driver.findElement(By.id("yearsInput")).sendKeys(years);
         driver.findElement(By.id("yearsInput")).sendKeys(Keys.TAB);
     }
 
-    private void inputInvestment(String investment) {
+    private void inputInvestmentAmount(String investment) {
         driver.findElement(By.id("oneTimeInvestmentInput")).sendKeys(investment);
         driver.findElement(By.id("oneTimeInvestmentInput")).sendKeys(Keys.TAB);
+    }
+
+    private String getActualTotalIncome(){
+        return driver.findElement(By.cssSelector("div.result p")).getText();
+    }
+
+    private String getActualNetIncome(){
+        return driver.findElement(By.xpath("//div[contains(@class,'result')]/div[2]/p")).getText();
+    }
+
+    private String getTitle (){
+        return driver.findElement(By.cssSelector("h1")).getText();
     }
 }
