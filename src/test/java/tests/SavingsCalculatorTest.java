@@ -30,17 +30,24 @@ public class SavingsCalculatorTest {
 
     @Test
     public void itShouldCalculateTotalIncome (){
-        new Select(driver.findElement(By.id("fundSelect"))).selectByVisibleText("Hoggwart's Fund");
-        driver.findElement(By.id("oneTimeInvestmentInput")).sendKeys("52000");
-        driver.findElement(By.id("yearsInput")).sendKeys("4");
-        driver.findElement(By.id("yearsInput")).sendKeys(Keys.TAB);
-        //driver.findElement(By.id("emailInput")).sendKeys("svenno1993@hotmail.com"); //is not needed in order to calculate
+        selectFund("Hoggwart's Fund");
+        inputInvestment("52000");
+        inputYears("4");
 
         String actualTotalIncome = driver.findElement(By.cssSelector("div.result p")).getText();
         Assert.assertFalse(actualTotalIncome.equals(""));
         Assert.assertTrue(actualTotalIncome.contains("kr"));
+    }
 
+    @Test
+    public void itShouldCalculateNetIncome (){
+        selectFund("Batman's Cave Development");
+        inputInvestment("24000");
+        inputYears("13");
 
+        String actualNetIncome = driver.findElement(By.xpath("//div[contains(@class,'result')]/div[2]/p")).getText();
+        Assert.assertFalse(actualNetIncome.equals(""));
+        Assert.assertTrue(actualNetIncome.contains("kr"));
     }
 
     @After
@@ -49,4 +56,17 @@ public class SavingsCalculatorTest {
         driver.quit(); //quits session
     }
 
+    private void selectFund(String fundName) {
+        new Select(driver.findElement(By.id("fundSelect"))).selectByVisibleText(fundName);
+    }
+
+    private void inputYears(String years) {
+        driver.findElement(By.id("yearsInput")).sendKeys(years);
+        driver.findElement(By.id("yearsInput")).sendKeys(Keys.TAB);
+    }
+
+    private void inputInvestment(String investment) {
+        driver.findElement(By.id("oneTimeInvestmentInput")).sendKeys(investment);
+        driver.findElement(By.id("oneTimeInvestmentInput")).sendKeys(Keys.TAB);
+    }
 }
