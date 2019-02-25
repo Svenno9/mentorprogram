@@ -1,5 +1,8 @@
 package pages;
 
+import enumerators.RiskLevel;
+import models.SavingRequest;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -7,6 +10,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+
+import java.util.List;
 
 public class SavingsRequestPage {
     @FindBy(id = "oneTimeInvestmentInput")
@@ -28,6 +33,12 @@ public class SavingsRequestPage {
 
     @FindBy(id = "fundSelect")
     private WebElement fund;
+
+    @FindBy(id = "emailInput")
+    private  WebElement emailInput;
+
+    @FindBy(css = "button.btn")
+    private WebElement applySavingForButton;
 
     private WebDriver driver;
 
@@ -60,5 +71,44 @@ public class SavingsRequestPage {
 
     public String getActualNetIncome(){
         return resultWrapper.findElement(By.xpath("./div[2]/p")).getText();
+    }
+
+    public RiskLevel getRiskLevel() {
+        String displayedRisk = resultWrapper.findElement(By.xpath("./div[3]/p")).getText();
+        RiskLevel riskLevel = RiskLevel.valueOf(displayedRisk.toUpperCase());
+        return riskLevel;
+    }
+
+    public void inputEmail(String email) {
+        emailInput.sendKeys(email);
+    }
+
+    public WebElement getApplySavingForButton() {
+        return applySavingForButton;
+    }
+
+    public List<WebElement> getListOfAllRequest() {
+        return driver.findElements(By.cssSelector("ul.saving-list li"));
+    }
+
+    public void enterNewSavingRequestData(SavingRequest request){
+        selectFund(request.getFund());
+        inputInvestmentAmount(request.getOneTimeInvestment());
+        inputInvestmentPeriod(String.valueOf(request.getYears()));
+        inputEmail(request.getEmail());
+    }
+
+    public void checkMostRecentSavingRequest(SavingRequest request) {
+        //getting the most recent saving request element
+        WebElement mostRecentSavingRequest = getListOfAllRequest().get(0);
+
+        // getting the actual text from the element
+        //check div.amount to check an area, this will reduce the chance of test breaking
+        String requestText = mostRecentSavingRequest.findElement(By.cssSelector("div.amounts")).getText();
+        String requestRisk = mostRecentSavingRequest.findElement(By.cssSelector("p.risk")).getText();
+
+        //comparing the actual tesxt with SavingRequest data
+        Assert.assertTrue(requestText.contains(request.getSavingResult().getTotalIncome()));
+        Assert.assertTrue(requestRisk.contains(request.getSavingResult().getRiskLevel().getUiValue()));
     }
 }
