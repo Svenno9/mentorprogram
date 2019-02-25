@@ -104,11 +104,15 @@ public class SavingsRequestPage {
 
         // getting the actual text from the element
         //check div.amount to check an area, this will reduce the chance of test breaking
-        String requestText = mostRecentSavingRequest.findElement(By.cssSelector("div.amounts")).getText();
-        String requestRisk = mostRecentSavingRequest.findElement(By.cssSelector("p.risk")).getText();
+        String actualTotalIncome = mostRecentSavingRequest.findElement(By.cssSelector("div.amounts")).getText();
+        String actualRisk = mostRecentSavingRequest.findElement(By.cssSelector("p.risk")).getText();
+        String actualFundDescription = mostRecentSavingRequest
+                .findElement(By.cssSelector("p.fund-description"))
+                .getText();
 
-        //comparing the actual tesxt with SavingRequest data
-        Assert.assertTrue(requestText.contains(request.getSavingResult().getTotalIncome()));
-        Assert.assertTrue(requestRisk.contains(request.getSavingResult().getRiskLevel().getUiValue()));
+        //comparing the actual texts with SavingRequest data
+        Assert.assertTrue(actualTotalIncome.contains(request.getSavingResult().getTotalIncome()));
+        Assert.assertTrue(actualRisk.contains(request.getSavingResult().getRiskLevel().getUiValue()));
+        Assert.assertTrue(actualFundDescription.contains(request.getFund()));
     }
 }
