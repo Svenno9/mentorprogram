@@ -1,6 +1,7 @@
 package models;
 
 import enumerators.RiskLevel;
+import utils.FormatterHelper;
 
 public class SavingResult {
     private String totalIncome;
@@ -29,5 +30,9 @@ public class SavingResult {
 
     public void setRisk(RiskLevel risk) {
         this.risk = risk;
+    }
+
+    public Double getTotalIncomeAsDouble(String amount) {
+        return FormatterHelper.amountToDouble(amount);
     }
 }
