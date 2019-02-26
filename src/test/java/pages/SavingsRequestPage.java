@@ -115,4 +115,8 @@ public class SavingsRequestPage {
         Assert.assertTrue(actualRisk.contains(request.getSavingResult().getRiskLevel().getUiValue()));
         Assert.assertTrue(actualFundDescription.contains(request.getFund()));
     }
+
+    public void openPage() {
+        driver.get("http://localhost/savingscalculator.php");
+    }
 }
