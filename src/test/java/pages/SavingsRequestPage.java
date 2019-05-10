@@ -87,9 +87,13 @@ public class SavingsRequestPage {
         return applySavingForButton;
     }
 
-    public List<WebElement> getListOfAllRequest() {
-        return driver.findElements(By.cssSelector("ul.saving-list li"));
-    }
+    @FindBy(css = "ul.saving-list li")
+    private List<WebElement> listOfAllRequest;
+
+    //public List<WebElement> getListOfAllRequest() {
+    //    return driver.findElements(By.cssSelector("ul.saving-list li"));
+    //}
+    public List<WebElement> getListOfAllRequest() { return listOfAllRequest;  }
 
     public void enterNewSavingRequestData(SavingRequest request){
         selectFund(request.getFund());

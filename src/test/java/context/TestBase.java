@@ -15,13 +15,13 @@ public class TestBase {
 
     @Before
     public void setUp() throws MalformedURLException {
-        // running with selenium server
-        ChromeOptions chromeOptions = new ChromeOptions();
-        driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), chromeOptions);
+        // running with selenium server on jenkins
+        //ChromeOptions chromeOptions = new ChromeOptions();
+        //driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), chromeOptions);
 
         // running localy
-        //System.setProperty("webdriver.chrome.driver", "C:\\tmp\\chromedriver.exe");
-        //driver = new ChromeDriver();
+        System.setProperty("webdriver.chrome.driver", "C:\\tmp\\chromedriver.exe");
+        driver = new ChromeDriver();
     }
 
     @After

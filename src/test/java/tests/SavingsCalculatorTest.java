@@ -6,13 +6,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import pages.SavingsRequestPage;
+import testData.SavingRequestsExamples;
 
 public class SavingsCalculatorTest extends TestBase {
     private SavingsRequestPage savingsRequestPage;
+    private SavingRequestsExamples savingRequestsExamples;
 
     @Before
     public void openPage() {
         savingsRequestPage = new SavingsRequestPage(driver);
+        savingRequestsExamples = new SavingRequestsExamples();
         savingsRequestPage.openPage();
     }
 
@@ -49,12 +52,7 @@ public class SavingsCalculatorTest extends TestBase {
 
     @Test
     public void itShouldEnableAddSavingButton() {
-        SavingRequest request = new SavingRequest(
-                "Batman's Cave Development",
-                "24000",
-                13,
-                "svenno1993@hotmail.com"
-        );
+        SavingRequest request = savingRequestsExamples.getRequest1();
         savingsRequestPage.enterNewSavingRequestData(request);
 
         Assert.assertTrue(savingsRequestPage.getApplySavingForButton().isEnabled());
@@ -63,12 +61,8 @@ public class SavingsCalculatorTest extends TestBase {
     @Test
     public void itShouldAddNewRequestToTheRecentRequestList() {
         //arrange
-        SavingRequest request = new SavingRequest(
-                "Batman's Cave Development",
-                "24000",
-                13,
-                "svenno1993@hotmail.com"
-        );
+        SavingRequest request = savingRequestsExamples.getRequest1();
+
         int initialNumberOfRequests = savingsRequestPage.getListOfAllRequest().size();
         savingsRequestPage.enterNewSavingRequestData(request);
         //act
@@ -80,12 +74,7 @@ public class SavingsCalculatorTest extends TestBase {
 
     @Test
     public void itShouldStoreCorrectResultDataInNewSavingsRequest() {
-        SavingRequest request = new SavingRequest(
-                "Batman's Cave Development",
-                "24000",
-                13,
-                "svenno1993@hotmail.com"
-        );
+        SavingRequest request = savingRequestsExamples.getRequest1();
         savingsRequestPage.enterNewSavingRequestData(request);
 
         request.getSavingResult().setTotalIncome(savingsRequestPage.getActualTotalIncome());
@@ -95,4 +84,9 @@ public class SavingsCalculatorTest extends TestBase {
         savingsRequestPage.getApplySavingForButton().click();
         savingsRequestPage.checkMostRecentSavingRequest(request);
     }
+
+    //@Test
+    //findByShouldBeAbleToHandleList(){
+
+    //}
 }
